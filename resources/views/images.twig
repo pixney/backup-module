@@ -1,0 +1,41 @@
+{% extends "pyrocms.theme.accelerant::layouts/default" %}
+
+{% block content %}
+
+    <div class="container-fluid">
+        <div class="col-24">
+            <div class="m-backup" style="background:#fff;padding:2rem;">
+                <h1 style="margin-bottom:1.5rem;">Digital Ocean</h1>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <strong>Snapshot name</strong>
+                    </div>
+                    <div class="col-sm-6">
+                        <strong>Created at</strong>
+                    </div>
+                    <div class="col-sm-2">
+                        <strong>Region</strong>
+                    </div>
+                    <div class="col-sm-4">
+                        <strong>Actions</strong>
+                    </div>
+                </div>
+                {% for image in images %}
+                    <div class="row" style="display:flex;align-items:center;height:2rem;margin-top:0.2rem">
+                        <div class="col-sm-12">
+                            {{image.name}} ({{image.sizeGigabytes}}GB)
+                        </div>
+                        <div class="col-sm-6">
+                            {{image.createdAt}}
+                        </div>
+                        <div class="col-sm-2">
+                            {{image.regions[0]}}
+                        </div>
+                        <div class="col-sm-4"><button style="border:0;background:#fb6d52;color:#fff; padding:0.2rem;width:100%;">Delete</button></div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+{% endblock content %}

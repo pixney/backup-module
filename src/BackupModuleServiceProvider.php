@@ -166,7 +166,7 @@ class BackupModuleServiceProvider extends AddonServiceProvider
                 echo $th->getMessage();
                 Log::error($th->getMessage());
             }
-        })->everyMinute();
+        })->dailyAt('01:15');
 
         $schedule->call(function () {
             Log::info('Creating a db backup');
@@ -176,7 +176,7 @@ class BackupModuleServiceProvider extends AddonServiceProvider
                 echo $th->getMessage();
                 Log::error($th->getMessage());
             }
-        })->everyMinute();
+        })->hourly();
     }
 
     /**

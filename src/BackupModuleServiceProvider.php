@@ -158,15 +158,15 @@ class BackupModuleServiceProvider extends AddonServiceProvider
     public function register(
         Schedule $schedule
     ) {
-        // $schedule->call(function () {
-        //     Log::info('Creating a files backup');
-        //     try {
-        //         $this->dispatch(new CreateFilesBackup(public_path()));
-        //     } catch (\Throwable $th) {
-        //         echo $th->getMessage();
-        //         Log::error($th->getMessage());
-        //     }
-        // })->everyMinute();
+        $schedule->call(function () {
+            Log::info('Creating a files backup');
+            try {
+                $this->dispatch(new CreateFilesBackup(public_path()));
+            } catch (\Throwable $th) {
+                echo $th->getMessage();
+                Log::error($th->getMessage());
+            }
+        })->everyMinute();
 
         $schedule->call(function () {
             Log::info('Creating a db backup');

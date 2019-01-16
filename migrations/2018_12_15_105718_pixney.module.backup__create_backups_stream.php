@@ -28,6 +28,22 @@ class PixneyModuleBackupCreateBackupsStream extends Migration
         'name' => [
             'translatable' => true,
             'required'     => true,
+        ],
+        'cron' => [
+            'translatable' => false,
+            'required'     => true,
+        ],
+        'type' => [
+            'translatable' => false,
+            'required'     => true,
+        ],
+        'path' => [
+            'translatable' => false,
+            'required'     => false,
+        ],
+        'storage' => [
+            'translatable' => false,
+            'required'     => true,
         ]
     ];
 }

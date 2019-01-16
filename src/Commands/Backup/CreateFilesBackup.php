@@ -3,7 +3,6 @@
 namespace Pixney\BackupModule\Commands\Backup;
 
 use Illuminate\Support\Facades\Log;
-use Pixney\BackupModule\Commands\CreatePath;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Pixney\BackupModule\Commands\Spaces\UploadToSpaces;
 

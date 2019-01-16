@@ -4,7 +4,6 @@ namespace Pixney\BackupModule\Commands\Backup;
 
 use Ifsnop\Mysqldump as IMysqldump;
 use Illuminate\Support\Facades\Log;
-use Pixney\BackupModule\Commands\CreatePath;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Pixney\BackupModule\Commands\Spaces\UploadToSpaces;
 
@@ -54,7 +53,7 @@ class CreateDbBackup
     {
         Log::info('Creating a db backup');
 
-        $this->path       = $this->dispatch(new CreatePath('db'));
+        $this->path       = $this->dispatch(new CreatePath('DB'));
         $this->host       = env('DB_HOST');
         $this->dbName     = env('DB_DATABASE');
         $this->dbUsername = env('DB_USERNAME');
@@ -70,6 +69,7 @@ class CreateDbBackup
     {
         try {
             $dump = new IMysqldump\Mysqldump("mysql:host={$this->host};dbname={$this->dbName}", $this->dbUsername, $this->dbPassword);
+
             $dump->start($this->path);
         } catch (\Exception $e) {
             Log::error('mysqldump-php error: ' . $e->getMessage());

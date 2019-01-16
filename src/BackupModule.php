@@ -28,7 +28,7 @@ class BackupModule extends Module
     protected $sections = [
         'backups' => [
             'buttons' => [
-                //'new_backup',
+                'new_backup',
             ],
         ],
     ];

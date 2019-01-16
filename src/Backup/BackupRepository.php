@@ -25,4 +25,9 @@ class BackupRepository extends EntryRepository implements BackupRepositoryInterf
     {
         $this->model = $model;
     }
+
+    public function getAll()
+    {
+        return $this->model->all();
+    }
 }

@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Console\Scheduling\Schedule;
 use Pixney\BackupModule\Backup\BackupModel;
 use Pixney\BackupModule\Backup\BackupRepository;
+use Pixney\BackupModule\Commands\Backup\CreateBackup;
 use Pixney\BackupModule\Commands\Backup\CreateDbBackup;
 use Anomaly\Streams\Platform\Addon\AddonServiceProvider;
 use Pixney\BackupModule\Commands\Backup\CreateFilesBackup;
@@ -27,16 +28,14 @@ class BackupModuleServiceProvider extends AddonServiceProvider
      *
      * @type array|null
      */
-    protected $commands = [
-    ];
+    protected $commands = [];
 
     /**
      * The addon's scheduled commands.
      *
      * @type array|null
      */
-    protected $schedules = [
-    ];
+    protected $schedules = [];
 
     /**
      * The addon API routes.
@@ -129,7 +128,6 @@ class BackupModuleServiceProvider extends AddonServiceProvider
      */
     protected $providers = [
         //\ExamplePackage\Provider\ExampleProvider::class
-        \GrahamCampbell\DigitalOcean\DigitalOceanServiceProvider::class
     ];
 
     /**
@@ -156,27 +154,28 @@ class BackupModuleServiceProvider extends AddonServiceProvider
      * Register the addon.
      */
     public function register(
-        Schedule $schedule
+        Schedule $schedule,
+        BackupRepositoryInterface $backup
     ) {
-        $schedule->call(function () {
-            Log::info('Creating a files backup');
-            try {
-                $this->dispatch(new CreateFilesBackup(public_path()));
-            } catch (\Throwable $th) {
-                echo $th->getMessage();
-                Log::error($th->getMessage());
-            }
-        })->cron(env('CRON_FILES', '15 1 * * *'));
+        // $schedule->call(function () {
+        //     Log::info('Creating a files backup');
+        //     try {
+        //         $this->dispatch(new CreateFilesBackup(public_path()));
+        //     } catch (\Throwable $th) {
+        //         echo $th->getMessage();
+        //         Log::error($th->getMessage());
+        //     }
+        // })->cron(env('CRON_FILES', '15 1 * * *'));
 
-        $schedule->call(function () {
-            Log::info('Creating a db backup');
-            try {
-                $this->dispatch(new CreateDbBackup());
-            } catch (\Throwable $th) {
-                echo $th->getMessage();
-                Log::error($th->getMessage());
-            }
-        })->cron(env('CRON_DB', '0 * * * *'));
+        // $schedule->call(function () {
+        //     Log::info('Creating a db backup');
+        //     try {
+        //         $this->dispatch(new CreateDbBackup());
+        //     } catch (\Throwable $th) {
+        //         echo $th->getMessage();
+        //         Log::error($th->getMessage());
+        //     }
+        // })->cron(env('CRON_DB', '0 * * * *'));
 
         // if (Schema::hasTable('tasks')) {
         //     // Get all tasks from the database
@@ -189,13 +188,43 @@ class BackupModuleServiceProvider extends AddonServiceProvider
         //         })->cron($task->frequency);
         //     }
         // }
+        // $backups = $backup->getAll();
+
+        // if (!is_null($backups)) {
+        //     foreach ($backups as $backup) {
+        //         $schedule->call(function () use ($backup) {
+        //             echo $backup->name;
+        //             try {
+        //                 $this->dispatch(new CreateBackup($backup));
+        //             } catch (\Throwable $th) {
+        //                 echo $th->getMessage();
+        //                 Log::error($th->getMessage());
+        //             }
+        //         })->cron($backup->cron);
+        //     }
+        // }
     }
 
     /**
      * Boot the addon.
      */
-    public function boot()
+    public function boot(Schedule $schedule, BackupRepositoryInterface $backup)
     {
+        $backups = $backup->getAll();
+
+        if (!is_null($backups)) {
+            foreach ($backups as $backup) {
+                $schedule->call(function () use ($backup) {
+                    try {
+                        $this->dispatch(new CreateBackup($backup));
+                    } catch (\Throwable $th) {
+                        echo $th->getMessage();
+                        Log::error($th->getMessage());
+                    }
+                })->cron($backup->cron);
+            }
+        }
+
         // Run extra post-boot registration logic here.
         // Use method injection or commands to bring in services.
     }

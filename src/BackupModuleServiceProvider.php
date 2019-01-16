@@ -8,9 +8,7 @@ use Illuminate\Console\Scheduling\Schedule;
 use Pixney\BackupModule\Backup\BackupModel;
 use Pixney\BackupModule\Backup\BackupRepository;
 use Pixney\BackupModule\Commands\Backup\CreateBackup;
-use Pixney\BackupModule\Commands\Backup\CreateDbBackup;
 use Anomaly\Streams\Platform\Addon\AddonServiceProvider;
-use Pixney\BackupModule\Commands\Backup\CreateFilesBackup;
 use Anomaly\Streams\Platform\Model\Backup\BackupBackupsEntryModel;
 use Pixney\BackupModule\Backup\Contract\BackupRepositoryInterface;
 
@@ -154,55 +152,7 @@ class BackupModuleServiceProvider extends AddonServiceProvider
      * Register the addon.
      */
     public function register(
-        Schedule $schedule,
-        BackupRepositoryInterface $backup
     ) {
-        // $schedule->call(function () {
-        //     Log::info('Creating a files backup');
-        //     try {
-        //         $this->dispatch(new CreateFilesBackup(public_path()));
-        //     } catch (\Throwable $th) {
-        //         echo $th->getMessage();
-        //         Log::error($th->getMessage());
-        //     }
-        // })->cron(env('CRON_FILES', '15 1 * * *'));
-
-        // $schedule->call(function () {
-        //     Log::info('Creating a db backup');
-        //     try {
-        //         $this->dispatch(new CreateDbBackup());
-        //     } catch (\Throwable $th) {
-        //         echo $th->getMessage();
-        //         Log::error($th->getMessage());
-        //     }
-        // })->cron(env('CRON_DB', '0 * * * *'));
-
-        // if (Schema::hasTable('tasks')) {
-        //     // Get all tasks from the database
-        //     $tasks = Task::all();
-        //     // Go through each task to dynamically set them up.
-        //     foreach ($tasks as $task) {
-        //         // Use the scheduler to add the task at its desired frequency
-        //         $schedule->call(function () use ($task) {
-        //             // Place your logic here
-        //         })->cron($task->frequency);
-        //     }
-        // }
-        // $backups = $backup->getAll();
-
-        // if (!is_null($backups)) {
-        //     foreach ($backups as $backup) {
-        //         $schedule->call(function () use ($backup) {
-        //             echo $backup->name;
-        //             try {
-        //                 $this->dispatch(new CreateBackup($backup));
-        //             } catch (\Throwable $th) {
-        //                 echo $th->getMessage();
-        //                 Log::error($th->getMessage());
-        //             }
-        //         })->cron($backup->cron);
-        //     }
-        // }
     }
 
     /**
@@ -218,7 +168,6 @@ class BackupModuleServiceProvider extends AddonServiceProvider
                     try {
                         $this->dispatch(new CreateBackup($backup));
                     } catch (\Throwable $th) {
-                        echo $th->getMessage();
                         Log::error($th->getMessage());
                     }
                 })->cron($backup->cron);

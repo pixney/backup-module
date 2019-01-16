@@ -33,7 +33,7 @@ class BackupTableBuilder extends TableBuilder
      * @var array|string
      */
     protected $buttons = [
-        'edit', 'view', 'backup'
+        'edit', 'view'
     ];
 
     /**

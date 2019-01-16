@@ -2,10 +2,6 @@
 
 namespace Pixney\BackupModule\Http\Controller\Admin;
 
-use Pixney\BackupModule\Commands\CreateDbBackup;
-use Pixney\BackupModule\Commands\UploadToSpaces;
-use Pixney\BackupModule\Commands\CreateFilesBackup;
-use GrahamCampbell\DigitalOcean\DigitalOceanManager;
 use Pixney\BackupModule\Backup\Form\BackupFormBuilder;
 use Pixney\BackupModule\Backup\Table\BackupTableBuilder;
 use Anomaly\Streams\Platform\Http\Controller\AdminController;
@@ -44,15 +40,5 @@ class BackupsController extends AdminController
     public function edit(BackupFormBuilder $form, $id)
     {
         return $form->render($id);
-    }
-
-    public function make(DigitalOceanManager $digitalocean)
-    {
-        $name ='mydbs.sql';
-        $path = $tmppath = database_path() . '/' . $name;
-        //$this->dispatch(new CreateDbBackup($path));
-        //$this->dispatch(new UploadToSpaces($path));
-        //$path = $this->dispatch(new CreateFilesBackup());
-        //$this->dispatch(new UploadToSpaces($path, 'filerna'));
     }
 }

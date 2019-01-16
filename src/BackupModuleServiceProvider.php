@@ -51,7 +51,6 @@ class BackupModuleServiceProvider extends AddonServiceProvider
         'admin/backup'             => 'Pixney\BackupModule\Http\Controller\Admin\BackupsController@index',
         'admin/backup/create'      => 'Pixney\BackupModule\Http\Controller\Admin\BackupsController@create',
         'admin/backup/edit/{id}'   => 'Pixney\BackupModule\Http\Controller\Admin\BackupsController@edit',
-        'admin/backup/backup/{id}' => 'Pixney\BackupModule\Http\Controller\Admin\BackupsController@make',
     ];
 
     /**

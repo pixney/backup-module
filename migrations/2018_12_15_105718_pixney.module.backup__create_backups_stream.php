@@ -11,12 +11,12 @@ class PixneyModuleBackupCreateBackupsStream extends Migration
      */
     protected $stream = [
         'slug'          => 'backups',
-         'title_column' => 'name',
-         'translatable' => true,
-         'versionable'  => false,
-         'trashable'    => true,
-         'searchable'   => true,
-         'sortable'     => true,
+        'title_column'  => 'name',
+        'translatable'  => false,
+        'versionable'   => false,
+        'trashable'     => true,
+        'searchable'    => true,
+        'sortable'      => true,
     ];
 
     /**
@@ -26,7 +26,7 @@ class PixneyModuleBackupCreateBackupsStream extends Migration
      */
     protected $assignments = [
         'name' => [
-            'translatable' => true,
+            'translatable' => false,
             'required'     => true,
         ],
         'cron' => [

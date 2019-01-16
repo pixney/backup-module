@@ -169,7 +169,7 @@ class BackupModuleServiceProvider extends AddonServiceProvider
                     } catch (\Throwable $th) {
                         Log::error($th->getMessage());
                     }
-                })->cron($backup->cron);
+                })->cron(trim($backup->cron));
             }
         }
 

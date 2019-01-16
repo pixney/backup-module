@@ -23,9 +23,9 @@ class BackupModuleSeeder extends Seeder
      */
     public function run()
     {
-        $this->call(BackupSeeder::class);
+        // $this->call(BackupSeeder::class);
 
-        $this->dispatch(new LoadDisks());
+        // $this->dispatch(new LoadDisks());
 
         // $this->call(FolderSeeder::class);
     }

@@ -2,6 +2,7 @@
 
 namespace Pixney\BackupModule\Commands\Backup;
 
+use File;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Foundation\Bus\DispatchesJobs;
@@ -66,12 +67,21 @@ class CreatePath
      */
     public function handle()
     {
-        $m          = Storage::disk('backup')->getAdapter()->getPathPrefix();
+        // $a = Storage::getAdapter()->getPathPrefix();
+        // dd(storage_path('tempdir'));
+        // echo $a;
+        // dd('hmm');
+
+        $tmpBackupStoragePath          = storage_path('backup-module');
+        if (!File::exists($tmpBackupStoragePath)) {
+            File::makeDirectory($tmpBackupStoragePath, 0775, true, true);
+        }
+
         $appName    = env('APPLICATION_NAME', 'nan');
         $appEnv     = env('APP_ENV', 'nan');
 
         // TODO: Allow specifying a path string in the .env file
-        $path       = "{$m}backups/tmp_{$appName}_{$appEnv}_{$this->type}_{$this->time}{$this->extension}";
+        $path       = "{$tmpBackupStoragePath}/tmp_{$appName}_{$appEnv}_{$this->type}_{$this->time}{$this->extension}";
 
         return $path;
     }

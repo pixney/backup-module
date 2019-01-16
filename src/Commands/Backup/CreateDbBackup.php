@@ -69,6 +69,7 @@ class CreateDbBackup
     {
         try {
             $dump = new IMysqldump\Mysqldump("mysql:host={$this->host};dbname={$this->dbName}", $this->dbUsername, $this->dbPassword);
+
             $dump->start($this->path);
         } catch (\Exception $e) {
             Log::error('mysqldump-php error: ' . $e->getMessage());

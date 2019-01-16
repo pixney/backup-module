@@ -166,7 +166,7 @@ class BackupModuleServiceProvider extends AddonServiceProvider
                 echo $th->getMessage();
                 Log::error($th->getMessage());
             }
-        })->dailyAt('01:15');
+        })->cron(env('CRON_FILES', '15 1 * * *'));
 
         $schedule->call(function () {
             Log::info('Creating a db backup');
@@ -176,7 +176,19 @@ class BackupModuleServiceProvider extends AddonServiceProvider
                 echo $th->getMessage();
                 Log::error($th->getMessage());
             }
-        })->hourly();
+        })->cron(env('CRON_DB', '0 * * * *'));
+
+        // if (Schema::hasTable('tasks')) {
+        //     // Get all tasks from the database
+        //     $tasks = Task::all();
+        //     // Go through each task to dynamically set them up.
+        //     foreach ($tasks as $task) {
+        //         // Use the scheduler to add the task at its desired frequency
+        //         $schedule->call(function () use ($task) {
+        //             // Place your logic here
+        //         })->cron($task->frequency);
+        //     }
+        // }
     }
 
     /**

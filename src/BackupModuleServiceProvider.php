@@ -163,17 +163,15 @@ class BackupModuleServiceProvider extends AddonServiceProvider
 
         if (!is_null($backups)) {
             foreach ($backups as $backup) {
-                $schedule->call(function () use ($backup) {
-                    try {
+                try {
+                    $schedule->call(function () use ($backup) {
                         $this->dispatch(new CreateBackup($backup));
                         $executionTime    = microtime(true) - $_SERVER['REQUEST_TIME_FLOAT'];
                         $seconds          = $executionTime;
-                        echo "This script took {$seconds} to execute.";
-                    } catch (\Throwable $th) {
-                        echo $th->getMessage();
-                        Log::error($th->getMessage());
-                    }
-                })->cron(trim($backup->cron));
+                    })->cron(trim($backup->cron));
+                } catch (\Throwable $th) {
+                    Log::error($th->getMessage());
+                }
             }
         }
 

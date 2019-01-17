@@ -73,14 +73,14 @@ class CreateDbBackup
             $dump->start($this->path);
         } catch (\Exception $e) {
             Log::error('mysqldump-php error: ' . $e->getMessage());
-            echo 'mysqldump-php error: ' . $e->getMessage();
+            //echo 'mysqldump-php error: ' . $e->getMessage();
         }
 
         try {
             $this->dispatch(new UploadToSpaces($this->path));
         } catch (\Throwable $th) {
             Log::error('Upload to spaces error: ' . $e->getMessage());
-            echo 'Upload to spaces error: ' . $th->getMessage();
+            // echo 'Upload to spaces error: ' . $th->getMessage();
         }
     }
 }

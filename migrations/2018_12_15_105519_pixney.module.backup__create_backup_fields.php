@@ -11,7 +11,13 @@ class PixneyModuleBackupCreateBackupFields extends Migration
      */
     protected $fields = [
         'name' => 'anomaly.field_type.text',
-        'cron' => 'anomaly.field_type.text',
+        'cron' => [
+            'type'   => 'anomaly.field_type.text',
+            'config' => [
+                'default_value' => '* * * * *'
+            ]
+        ],
+
         'type' => [
             'type'   => 'anomaly.field_type.select',
             'config' => [

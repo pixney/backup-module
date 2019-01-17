@@ -2,8 +2,9 @@
 
 namespace Pixney\BackupModule\Commands\Backup;
 
+use Pixney\BackupModule\Backup\BackupModel;
 use Illuminate\Foundation\Bus\DispatchesJobs;
-use Pixney\BackupModule\Commands\ResolvePath;
+use Pixney\BackupModule\Commands\ResolvePathToBackup;
 
 /**
  * Class CreateDbBackup
@@ -18,12 +19,26 @@ class CreateBackup
     use DispatchesJobs;
 
     protected $backup;
+    protected $pathToBackup;
     protected $type;
 
-    public function __construct($backup)
+    public function __construct(BackupModel $backup)
     {
-        $this->backup=$backup;
-        $this->type  = $this->backup->type;
+        $this->backup = $backup;
+
+        if (!isset($this->backup->type) || empty($this->backup->type)) {
+            throw new \Exception('Backup type not specified');
+        }
+
+        if (!in_array($this->backup->type, ['DB', 'FILES'])) {
+            throw new \Exception('Backup type not specified');
+        }
+        if ($this->backup->type === 'FILES' && (!isset($this->backup->path) || empty($this->backup->path))) {
+            throw new \Exception('Path to backup not specified');
+        }
+
+        $this->pathToBackup = $this->backup->path;
+        $this->type         = $this->backup->type;
     }
 
     /**
@@ -33,13 +48,13 @@ class CreateBackup
      */
     public function handle()
     {
-        if (strtoupper($this->type) === 'FILES') {
-            $path = $this->dispatch(new ResolvePath($this->backup->path));
-            $this->dispatch(new CreateFilesBackup($path));
-        } elseif (strtoupper($this->type) === 'DB') {
-            $this->dispatch(new CreateDbBackup());
-        }
+        $tmpFilePath        = $this->dispatch(new CreateTmpPath($this->type, $this->backup->name));
 
-        // Find out what type of backup
+        if (strtoupper($this->type) === 'FILES') {
+            $pathToBackup = $this->dispatch(new ResolvePathToBackup($this->pathToBackup));
+            $this->dispatch(new CreateFilesBackup($tmpFilePath, $pathToBackup));
+        } elseif (strtoupper($this->type) === 'DB') {
+            $this->dispatch(new CreateDbBackup($tmpFilePath));
+        }
     }
 }

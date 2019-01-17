@@ -12,7 +12,7 @@ use Illuminate\Foundation\Bus\DispatchesJobs;
  *
  *  @link https://pixney.com
  */
-class ResolvePath
+class ResolvePathToBackup
 {
     use DispatchesJobs;
 
@@ -54,7 +54,7 @@ class ResolvePath
                 break;
 
             default:
-                return null;
+                throw new \Exception('Backup path not correctly specified');
                 break;
         }
     }

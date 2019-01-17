@@ -33,19 +33,17 @@ class CreateFilesBackup
      */
     protected $backupDirectory;
 
-    public function __construct($backupDirectory=null)
+    public function __construct($tmpFilePath=null, $pathToBackup=null)
     {
-        Log::info('Creating a files backup');
-
-        if ($backupDirectory === null) {
-            throw new \Exception('Missing directory to backup');
+        if ($pathToBackup === null || $tmpFilePath === null) {
+            throw new \Exception('Missing path to backup or temp file path');
         }
-        if (!file_exists($backupDirectory)) {
-            throw new \Exception("Directory doesnt exist ({$backupDirectory})");
+        if (!file_exists($pathToBackup)) {
+            throw new \Exception("Directory doesnt exist ({$pathToBackup})");
         }
 
-        $this->path            = $this->dispatch(new CreatePath('FILES'));
-        $this->backupDirectory = $backupDirectory;
+        $this->path            = $tmpFilePath;
+        $this->backupDirectory = $pathToBackup;
     }
 
     public function handle()
@@ -56,7 +54,7 @@ class CreateFilesBackup
             $this->dispatch(new UploadToSpaces($this->path));
         } catch (\Throwable $th) {
             Log::error('Upload to spaces error: ' . $e->getMessage());
-            echo 'Upload to spaces error: ' . $th->getMessage();
+            throw $th;
         }
     }
 }

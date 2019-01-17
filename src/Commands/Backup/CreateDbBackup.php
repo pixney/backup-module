@@ -49,11 +49,11 @@ class CreateDbBackup
      */
     protected $dbPassword;
 
-    public function __construct()
+    public function __construct($tmpFilePath=null)
     {
         Log::info('Creating a db backup');
 
-        $this->path       = $this->dispatch(new CreatePath('DB'));
+        $this->path       = $tmpFilePath;
         $this->host       = env('DB_HOST');
         $this->dbName     = env('DB_DATABASE');
         $this->dbUsername = env('DB_USERNAME');

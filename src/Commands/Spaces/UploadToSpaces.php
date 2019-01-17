@@ -36,6 +36,9 @@ class UploadToSpaces
 
     public function __construct($tmpFile)
     {
+        if (!file_exists($tmpFile)) {
+            throw new \Exception('The file you would like to upload, does not exist');
+        }
         $this->tmpFile           = $tmpFile;
 
         $this->fileBaseName      =str_replace('tmp_', '', pathinfo($this->tmpFile, PATHINFO_BASENAME));

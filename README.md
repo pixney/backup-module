@@ -27,7 +27,10 @@ S3_REGION=""
 Then within the admin you add your backup job with a cron schedule. See [Cronjob Guru for reference](https://crontab.guru/)
 
 
-Add a cronjob :
+### Add a cronjob :
 ```
 * * * * * cd /path-to-your-project && php artisan schedule:run >> /dev/null 2>&1
 ```
+
+### Add a cronjob using runcloud
+Within vendor binary, choose `write your own within command` the add your command as above. Example: `/bin/bash && cd /home/runcloud/webapps/pixney && php artisan schedule:run >> /dev/null 2>&1` 

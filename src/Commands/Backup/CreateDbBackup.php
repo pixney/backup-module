@@ -78,7 +78,7 @@ class CreateDbBackup
 
         try {
             $this->dispatch(new UploadToSpaces($this->path));
-        } catch (\Throwable $th) {
+        } catch (\Throwable $e) {
             Log::error('Upload to spaces error: ' . $e->getMessage());
             // echo 'Upload to spaces error: ' . $th->getMessage();
         }
